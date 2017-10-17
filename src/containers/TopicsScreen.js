@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './TopicsScreen.css';
-import * as topicsActions from '../store/topics/action';
+import * as topicsActions from '../store/topics/actions';
 import * as topicsSelectors from '../store/topics/reducer';
 import ListView from '../components/ListView';
 
