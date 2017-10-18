@@ -4,6 +4,7 @@ import './TopicsScreen.css';
 import * as topicsActions from '../store/topics/actions';
 import * as topicsSelectors from '../store/topics/reducer';
 import ListView from '../components/ListView';
+import ListRow from '../components/ListRow';
 
 class TopicsScreen extends Component {
     componentDidMount() {
@@ -17,8 +18,7 @@ class TopicsScreen extends Component {
                 <ListView
                     rowsIdArray={this.props.rowsIdArray}
                     rowsById={this.props.rowsById}
-                    renderRow={this.renderRow}
-                />
+                    renderRow={this.renderRow.bind(this)} />
             </div>
         );
     }
@@ -29,13 +29,22 @@ class TopicsScreen extends Component {
         );
     }
 
-    renderRow(row) {
+    renderRow(rowId, row) {
+        const selected = this.props.selectedIdsMap[rowId];
         return (
-            <div>
+            <ListRow
+                rowId={rowId}
+                onClick={this.onRowClick.bind(this)}
+                selected={selected}
+            >
                 <h3>{row.title}</h3>
                 <p>{row.description}</p>
-            </div>
+            </ListRow>
         )
+    }
+
+    onRowClick(rowId) {
+        this.props.dispatch(topicsActions.selectTopic(rowId));
     }
 }
 
@@ -43,7 +52,8 @@ class TopicsScreen extends Component {
 function mapStateToProps(state) {
     return {
         rowsById: topicsSelectors.getTopicsByUrl(state),
-        rowsIdArray: topicsSelectors.getTopicsUrlArray(state)
+        rowsIdArray: topicsSelectors.getTopicsUrlArray(state),
+        selectedIdsMap: topicsSelectors.getSelectedTopicUrlsMap(state)
     };
 }
 
