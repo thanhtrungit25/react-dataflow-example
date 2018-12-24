@@ -3,8 +3,10 @@ import { connect } from "react-redux"
 import "./PostsScreen.css"
 import * as postsActions from "../store/posts/actions"
 import * as postsSelectors from "../store/posts/reducer"
+import * as topicsSelectors from "../store/topics/reducer"
 import ListView from "../components/ListView"
 import ListRow from "../components/ListRow"
+import TopicFilter from "../components/TopicFilter"
 
 class PostsScreen extends Component {
   componentDidMount() {
@@ -14,6 +16,12 @@ class PostsScreen extends Component {
     if (!this.props.rowsById) return this.renderLoading()
     return (
       <div className="PostsScreen">
+        <TopicFilter
+          className="TopicFilter"
+          topics={this.props.topicsByUrl}
+          selected={this.props.currentFilter}
+          onChanged={this.onFilterChange.bind(this)}
+        />
         <ListView
           rowsIdArray={this.props.rowsIdArray}
           rowsById={this.props.rowsById}
@@ -33,11 +41,15 @@ class PostsScreen extends Component {
         {!row.thumbnail ? (
           false
         ) : (
-          <img className="thumbnail" src={row.thumbnail} />
+          <img className="thumbnail" src={row.thumbnail} alt="thumbnail" />
         )}
         <h3>{row.title}</h3>
       </ListRow>
     )
+  }
+
+  onFilterChange(newFilter) {
+    console.log(newFilter)
   }
 }
 
@@ -45,7 +57,9 @@ function mapStateToProps(state) {
   const [postsById, postsIdArray] = postsSelectors.getPosts(state)
   return {
     rowsById: postsById,
-    rowsIdArray: postsIdArray
+    rowsIdArray: postsIdArray,
+    topicsByUrl: topicsSelectors.getSelectedTopicsByUrl(state),
+    currentFilter: postsSelectors.getCurrentFilter(state)
   }
 }
 
