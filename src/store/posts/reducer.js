@@ -20,6 +20,10 @@ export default function reducer(state = initialState, action) {
       return state.merge({
         postsById: action.postsById
       })
+    case types.FILTER_CHANGED:
+      return state.merge({
+        currentFilter: action.filter
+      })
     default:
       return state
   }
