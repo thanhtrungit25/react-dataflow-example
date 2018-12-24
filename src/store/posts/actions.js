@@ -11,7 +11,6 @@ export function fetchPosts() {
         redditService.getPostsFromSubreddits(topicUrl)
       )
       const topicPosts = await Promise.all(fetchPromises)
-      console.log("topicPosts", topicPosts)
       const postsById = _.keyBy(_.flatten(topicPosts), post => post.id)
       dispatch({ type: types.POSTS_FETCHED, postsById })
     } catch (error) {

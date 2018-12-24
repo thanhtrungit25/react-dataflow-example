@@ -39,7 +39,6 @@ class RedditService {
   }
 
   async getPostsFromSubreddits(subredditUrl) {
-    debugger
     const url = `${REDDIT_ENDPOINT}${subredditUrl}hot.json`
 
     const response = await fetch(url, {
