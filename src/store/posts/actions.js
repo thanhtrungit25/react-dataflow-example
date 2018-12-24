@@ -11,7 +11,10 @@ export function fetchPosts() {
         redditService.getPostsFromSubreddits(topicUrl)
       )
       const topicPosts = await Promise.all(fetchPromises)
-      const postsById = _.keyBy(_.flatten(topicPosts), post => post.id)
+      const postsById = _.keyBy(
+        _.shuffle(_.flatten(topicPosts)),
+        post => post.id
+      )
       dispatch({ type: types.POSTS_FETCHED, postsById })
     } catch (error) {
       console.error(error)
