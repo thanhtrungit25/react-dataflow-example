@@ -29,7 +29,8 @@ class RedditService {
         `RedditService getDefaultSubreddits failed, childrent not returned`
       )
     }
-    return _.map(children, subreddit => {
+    const sortBySubscribers = _.sortBy(children, "data.subscribers", "desc")
+    return _.map(sortBySubscribers, subreddit => {
       return {
         title: _.get(subreddit, "data.display_name"),
         description: _.get(subreddit, "data.public_description"),
