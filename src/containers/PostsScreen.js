@@ -7,6 +7,7 @@ import * as topicsSelectors from "../store/topics/reducer"
 import ListView from "../components/ListView"
 import ListRow from "../components/ListRow"
 import TopicFilter from "../components/TopicFilter"
+import PostView from "../components/PostView"
 
 class PostsScreen extends Component {
   componentDidMount() {
@@ -16,17 +17,22 @@ class PostsScreen extends Component {
     if (!this.props.rowsById) return this.renderLoading()
     return (
       <div className="PostsScreen">
-        <TopicFilter
-          className="TopicFilter"
-          topics={this.props.topicsByUrl}
-          selected={this.props.currentFilter}
-          onChanged={this.onFilterChange.bind(this)}
-        />
-        <ListView
-          rowsIdArray={this.props.rowsIdArray}
-          rowsById={this.props.rowsById}
-          renderRow={this.renderRow.bind(this)}
-        />
+        <div className="LeftPane">
+          <TopicFilter
+            className="TopicFilter"
+            topics={this.props.topicsByUrl}
+            selected={this.props.currentFilter}
+            onChanged={this.onFilterChange.bind(this)}
+          />
+          <ListView
+            rowsIdArray={this.props.rowsIdArray}
+            rowsById={this.props.rowsById}
+            renderRow={this.renderRow.bind(this)}
+          />
+        </div>
+        <div className="ContentPane">
+          <PostView post={this.props.currentPost} />
+        </div>
       </div>
     )
   }
@@ -36,8 +42,13 @@ class PostsScreen extends Component {
   }
 
   renderRow(rowId, row) {
+    const selected = this.props.currentPost === row
     return (
-      <ListRow rowId={rowId} onClick={this.onRowClick.bind(this)}>
+      <ListRow
+        rowId={rowId}
+        onClick={this.onRowClick.bind(this)}
+        selected={selected}
+      >
         {!row.thumbnail ? (
           false
         ) : (
@@ -63,7 +74,8 @@ function mapStateToProps(state) {
     rowsById: postsById,
     rowsIdArray: postsIdArray,
     topicsByUrl: topicsSelectors.getSelectedTopicsByUrl(state),
-    currentFilter: postsSelectors.getCurrentFilter(state)
+    currentFilter: postsSelectors.getCurrentFilter(state),
+    currentPost: postsSelectors.getCurrentPost(state)
   }
 }
 
