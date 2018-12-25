@@ -19,7 +19,7 @@ class PostsScreen extends Component {
     this.props.dispatch(postsActions.fetchPosts())
   }
   render() {
-    if (!this.props.rowsById) return this.renderLoading()
+    if (!this.props.postsById) return this.renderLoading()
     return (
       <div className="PostsScreen">
         <div className="LeftPane">
@@ -30,8 +30,8 @@ class PostsScreen extends Component {
             onChanged={this.onFilterChange}
           />
           <ListView
-            rowsIdArray={this.props.rowsIdArray}
-            rowsById={this.props.rowsById}
+            rowsIdArray={this.props.postsIdArray}
+            rowsById={this.props.postsById}
             renderRow={this.renderRow}
           />
         </div>
@@ -46,16 +46,16 @@ class PostsScreen extends Component {
     return <p>Loading...</p>
   }
 
-  renderRow(rowId, row) {
-    const selected = this.props.currentPost === row
+  renderRow(postId, post) {
+    const selected = this.props.currentPost === post
     return (
-      <ListRow rowId={rowId} onClick={this.onRowClick} selected={selected}>
-        {!row.thumbnail ? (
+      <ListRow rowId={postId} onClick={this.onRowClick} selected={selected}>
+        {!post.thumbnail ? (
           false
         ) : (
-          <img className="thumbnail" src={row.thumbnail} alt="thumbnail" />
+          <img className="thumbnail" src={post.thumbnail} alt="thumbnail" />
         )}
-        <h3>{row.title}</h3>
+        <h3>{post.title}</h3>
       </ListRow>
     )
   }
@@ -64,16 +64,16 @@ class PostsScreen extends Component {
     this.props.dispatch(postsActions.changeFilter(newFilter))
   }
 
-  onRowClick(rowId) {
-    this.props.dispatch(postsActions.selectPost(rowId))
+  onRowClick(postId) {
+    this.props.dispatch(postsActions.selectPost(postId))
   }
 }
 
 function mapStateToProps(state) {
   const [postsById, postsIdArray] = postsSelectors.getPosts(state)
   return {
-    rowsById: postsById,
-    rowsIdArray: postsIdArray,
+    postsById,
+    postsIdArray,
     topicsByUrl: topicsSelectors.getSelectedTopicsByUrl(state),
     currentFilter: postsSelectors.getCurrentFilter(state),
     currentPost: postsSelectors.getCurrentPost(state)
