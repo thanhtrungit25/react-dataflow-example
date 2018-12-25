@@ -10,7 +10,7 @@ import Immutable from "seamless-immutable"
 
 const initialState = Immutable({
   postsById: undefined,
-  currentFilter: "",
+  currentFilter: "all",
   currentPostId: undefined
 })
 
@@ -31,8 +31,15 @@ export default function reducer(state = initialState, action) {
 
 // selectors
 export function getPosts(state) {
+  const currentFilter = state.posts.currentFilter
   const postsById = state.posts.postsById
-  const postsIdArray = _.keys(postsById)
+  const postsIdArray =
+    currentFilter === "all"
+      ? _.keys(postsById)
+      : _.filter(
+          _.keys(postsById),
+          postId => postsById[postId].topicUrl === currentFilter
+        )
   return [postsById, postsIdArray]
 }
 
