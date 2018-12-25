@@ -37,7 +37,7 @@ class PostsScreen extends Component {
 
   renderRow(rowId, row) {
     return (
-      <ListRow rowId={rowId}>
+      <ListRow rowId={rowId} onClick={this.onRowClick.bind(this)}>
         {!row.thumbnail ? (
           false
         ) : (
@@ -50,6 +50,10 @@ class PostsScreen extends Component {
 
   onFilterChange(newFilter) {
     this.props.dispatch(postsActions.changeFilter(newFilter))
+  }
+
+  onRowClick(rowId) {
+    this.props.dispatch(postsActions.selectPost(rowId))
   }
 }
 

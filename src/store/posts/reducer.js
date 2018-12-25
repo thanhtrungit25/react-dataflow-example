@@ -24,6 +24,10 @@ export default function reducer(state = initialState, action) {
       return state.merge({
         currentFilter: action.filter
       })
+    case types.POST_SELECTED:
+      return state.merge({
+        currentPostId: action.postId
+      })
     default:
       return state
   }
