@@ -1,22 +1,28 @@
 {
   "name": "react-dataflow-example",
+  "homepage": "http://thanhtrungit25.github.io/react-dataflow-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "lodash": "^4.17.4",
     "react": "^16.0.0",
+    "react-autobind": "^1.0.6",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "react-scripts": "1.0.14",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "seamless-immutable": "^7.1.2",
-    "react-autobind": "^1.0.6"
+    "seamless-immutable": "^7.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
   }
 }
