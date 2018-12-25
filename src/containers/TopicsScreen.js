@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
+import autoBind from "react-autobind"
 import "./TopicsScreen.css"
 import * as topicsActions from "../store/topics/actions"
 import * as topicsSelectors from "../store/topics/reducer"
@@ -7,6 +8,10 @@ import ListView from "../components/ListView"
 import ListRow from "../components/ListRow"
 
 class TopicsScreen extends Component {
+  constructor(props) {
+    super(props)
+    autoBind(this)
+  }
   componentDidMount() {
     this.props.dispatch(topicsActions.fetchTopics())
   }
@@ -18,15 +23,12 @@ class TopicsScreen extends Component {
         <ListView
           rowsIdArray={this.props.rowsIdArray}
           rowsById={this.props.rowsById}
-          renderRow={this.renderRow.bind(this)}
+          renderRow={this.renderRow}
         />
         {!this.props.canFinalizeSelection ? (
           false
         ) : (
-          <button
-            className="NextScreen"
-            onClick={this.onNextScreenClick.bind(this)}
-          />
+          <button className="NextScreen" onClick={this.onNextScreenClick} />
         )}
       </div>
     )
@@ -39,11 +41,7 @@ class TopicsScreen extends Component {
   renderRow(rowId, row) {
     const selected = this.props.selectedRowsById[rowId]
     return (
-      <ListRow
-        rowId={rowId}
-        onClick={this.onRowClick.bind(this)}
-        selected={selected}
-      >
+      <ListRow rowId={rowId} onClick={this.onRowClick} selected={selected}>
         <h3>{row.title}</h3>
         <p>{row.description}</p>
       </ListRow>
