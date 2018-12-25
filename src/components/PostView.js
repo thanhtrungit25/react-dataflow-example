@@ -17,9 +17,7 @@ export default class PostView extends Component {
   }
 
   renderBody() {
-    return (
-      <div dangerouslySetInnerHTML={this._getBodyMarup(this.props.post.body)} />
-    )
+    return <div>{this.props.post.body} </div>
   }
 
   renderImage() {
@@ -35,17 +33,6 @@ export default class PostView extends Component {
         </a>
       </div>
     )
-  }
-
-  _getBodyMarup(body) {
-    return {
-      _html: body
-        .replace(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec))
-        .replace(/&amp;/g, "&")
-        .replace(/&lt;/g, "<")
-        .replace(/&gt;/g, ">")
-        .replace(/&quot;/g, '"')
-    }
   }
 
   _isImage(url) {
